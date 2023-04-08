@@ -4,7 +4,7 @@
 ## Server
 Install meilisearch v1.1.0 
 
-config.toml used 
+config.toml:
 
 ```
 env="development"
@@ -16,7 +16,7 @@ max_indexing_threads = 9
 log_level="DEBUG"
 ```
 
-Meilisearch is running ob ubuntu 22 on a server with 128G RAM and 12 cores.
+Meilisearch is running on ubuntu 22 on a server with 128G RAM and 12 cores.
 
 compiled from source using rustc in release mode: 
 
@@ -25,6 +25,7 @@ rustc 1.68.2 (9eb3afe9e 2023-03-27)
 ```
 
 see the ```common/src/lib.rs``` file for host configuration and API key.
+
 ## reproduce error
 
 - clone repo
@@ -32,7 +33,7 @@ see the ```common/src/lib.rs``` file for host configuration and API key.
 - insert test data: run  ```target/release/insert_dummy_data``` - this will insert 10_000_000 documents in the ```movie``` index, 10_000_000 documents
 into the ```person``` index and approx. 56_000_000 documents into the ```principal``` index. These are roughly the same numbers as in the original dataset: https://datasets.imdbws.com/
 - run the  ```target/release/create_combined_index``` binary. This program will spawn some tokio tasks (4 tasks are enough to provoke the 408 error). Each task reads documents paginated (limited to 100 movies) from the ```movie``` index and
-for each movie executes two filter queries: one for the ```principal``` and the second one for the ```person``` index. The program then combines the data and tries to insert a list of ```SearchDoc``` documents into the ```search_doc``` index.
+for each movie executes two filter queries: one for the ```principal``` and the second one for the ```person``` index. The program then combines the data into a ```SearchDoc``` document. After all 100 movies are processed the program tries to insert a list of 100 ```SearchDoc``` documents into the ```search_doc``` index.
 
 Running the ```target/release/create_combined_index``` crashes some of the tokio tasks almost immediately after starting the program. 
 The Rust meilisearch client logs a warning: ```meilisearch_sdk  meilisearch_sdk::request] Expected response code 200, got 408```
