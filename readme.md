@@ -1,8 +1,8 @@
 # reproducible 408 under high load
 
-
 ## Server
-Install meilisearch v1.1.0 
+
+Install meilisearch v1.1.0
 
 config.toml:
 
@@ -18,7 +18,7 @@ log_level="DEBUG"
 
 Meilisearch is running on ubuntu 22 on a server with 128G RAM and 12 cores.
 
-compiled from source using rustc in release mode: 
+compiled from source using rustc in release mode:
 
 ```
 rustc 1.68.2 (9eb3afe9e 2023-03-27)
@@ -30,13 +30,21 @@ see the ```common/src/lib.rs``` file for host configuration and API key.
 
 - clone repo
 - compile using ```cargo build --release```
-- insert test data: run  ```target/release/insert_dummy_data``` - this will insert 10_000_000 documents in the ```movie``` index, 10_000_000 documents
-into the ```person``` index and approx. 56_000_000 documents into the ```principal``` index. These are roughly the same numbers as in the original dataset: https://datasets.imdbws.com/
-- run the  ```target/release/create_combined_index``` binary. This program will spawn some tokio tasks (4 tasks are enough to provoke the 408 error). Each task reads documents paginated (limited to 100 movies) from the ```movie``` index and
-for each movie executes two filter queries: one for the ```principal``` and the second one for the ```person``` index. The program then combines the data into a ```SearchDoc``` document. After all 100 movies are processed the program tries to insert a list of 100 ```SearchDoc``` documents into the ```search_doc``` index.
+- insert test data: run  ```target/release/insert_dummy_data``` - this will insert 10_000_000 documents in
+  the ```movie``` index, 10_000_000 documents
+  into the ```person``` index and approx. 56_000_000 documents into the ```principal``` index. These are roughly the
+  same numbers as in the original dataset: https://datasets.imdbws.com/
+- run the  ```target/release/create_combined_index``` binary. This program will spawn some tokio tasks (4 tasks are
+  enough to provoke the 408 error). Each task reads documents paginated (limited to 100 movies) from the ```movie```
+  index and
+  for each movie executes two filter queries: one for the ```principal``` and the second one for the ```person``` index.
+  The program then combines the data into a ```SearchDoc``` document. After all 100 movies are processed the program
+  tries to insert a list of 100 ```SearchDoc``` documents into the ```search_doc``` index.
 
-Running the ```target/release/create_combined_index``` crashes some of the tokio tasks almost immediately after starting the program. 
-The Rust meilisearch client (https://github.com/meilisearch/meilisearch-rust) logs a warning: ```meilisearch_sdk  meilisearch_sdk::request] Expected response code 200, got 408```
+Running the ```target/release/create_combined_index``` crashes some of the tokio tasks almost immediately after starting
+the program.
+The Rust meilisearch client (https://github.com/meilisearch/meilisearch-rust) logs a
+warning: ```meilisearch_sdk  meilisearch_sdk::request] Expected response code 200, got 408```
 
 Log output of the ```target/release/create_combined_index``` binary:
 
@@ -77,11 +85,11 @@ thread 'tokio-runtime-worker' panicked at 'called `Result::unwrap()` on an `Err`
 
 ```
 
-Each filter query from the ```principal```  index return 2 documents, the filter query from the  ```person``` index always returns 6 documents.
+Each filter query from the ```principal```  index return 2 documents, the filter query from the  ```person``` index
+always returns 6 documents.
 
-The index sizes are the "smallest" sizes where the problem could be reproduced. 
-Smaller datasets and for example increasing the number of spawned tasks could not trigger the 408 response. 
-
+The index sizes are the "smallest" sizes where the problem could be reproduced.
+Smaller datasets and for example increasing the number of spawned tasks could not trigger the 408 response.
 
 ## Output from meilisearch server start
 
