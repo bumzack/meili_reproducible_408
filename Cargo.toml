@@ -1,0 +1,7 @@
+[workspace]
+
+members = [
+    "common",
+    "create_combined_index",
+    "insert_dummy_data"
+]
