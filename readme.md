@@ -36,7 +36,7 @@ into the ```person``` index and approx. 56_000_000 documents into the ```princip
 for each movie executes two filter queries: one for the ```principal``` and the second one for the ```person``` index. The program then combines the data into a ```SearchDoc``` document. After all 100 movies are processed the program tries to insert a list of 100 ```SearchDoc``` documents into the ```search_doc``` index.
 
 Running the ```target/release/create_combined_index``` crashes some of the tokio tasks almost immediately after starting the program. 
-The Rust meilisearch client logs a warning: ```meilisearch_sdk  meilisearch_sdk::request] Expected response code 200, got 408```
+The Rust meilisearch client (https://github.com/meilisearch/meilisearch-rust) logs a warning: ```meilisearch_sdk  meilisearch_sdk::request] Expected response code 200, got 408```
 
 Log output of the ```target/release/create_combined_index``` binary:
 
