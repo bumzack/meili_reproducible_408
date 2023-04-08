@@ -81,3 +81,41 @@ Each filter query from the ```principal```  index return 2 documents, the filter
 
 The index sizes are the "smallest" sizes where the problem could be reproduced. 
 Smaller datasets and for example increasing the number of spawned tasks could not trigger the 408 response. 
+
+
+## Output from meilisearch server start
+
+```
+8888b   d8888          Y8P 888 Y8P                                            888
+88888b.d88888              888                                                888
+888Y88888P888  .d88b.  888 888 888 .d8888b   .d88b.   8888b.  888d888 .d8888b 88888b.
+888 Y888P 888 d8P  Y8b 888 888 888 88K      d8P  Y8b     "88b 888P"  d88P"    888 "88b
+888  Y8P  888 88888888 888 888 888 "Y8888b. 88888888 .d888888 888    888      888  888
+888   "   888 Y8b.     888 888 888      X88 Y8b.     888  888 888    Y88b.    888  888
+888       888  "Y8888  888 888 888  88888P'  "Y8888  "Y888888 888     "Y8888P 888  888
+
+Config file path:       "./config.toml"
+Database path:          "../../data/meilifile"
+Server listening on:    "http://localhost:7777"
+Environment:            "development"
+Commit SHA:             "950f73b8bbc85c4e5c3485d7054ff697cb0c0052"
+Commit date:            "2023-03-30T08:31:29Z"
+Package version:        "1.1.0"
+
+Thank you for using Meilisearch!
+
+
+We collect anonymized analytics to improve our product and your experience. To learn more, including how to turn off analytics, visit our dedicated documentation page: https://docs.meilisearch.com/learn/what_is_meilisearch/telemetry.html
+
+Anonymous telemetry:    "Enabled"
+Instance UID:           "9bcdeece-0459-45f0-ba8f-67d9e2c26cac"
+
+A master key has been set. Requests to Meilisearch won't be authorized unless you provide an authentication key.
+
+Documentation:          https://docs.meilisearch.com
+Source code:            https://github.com/meilisearch/meilisearch
+Contact:                https://docs.meilisearch.com/resources/contact.html
+
+[2023-04-08T19:21:43Z INFO  actix_server::builder] Starting 6 workers
+[2023-04-08T19:21:43Z INFO  actix_server::server] Actix runtime found; starting in Actix runtime
+```
